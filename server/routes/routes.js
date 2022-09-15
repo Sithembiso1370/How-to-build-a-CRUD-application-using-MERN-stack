@@ -1,27 +1,4 @@
-const express = require('express')
-const cors = require('cors')
-const app = express()
-const mongoose = require('mongoose')
-const PhoneBook = require('./models/PhoneBook.model')
-
-
-const DB = 'mongodb+srv://Samantha:20060121$Sm@cluster0.doubvu5.mongodb.net/?retryWrites=true&w=majority'
-mongoose.connect(DB, {
-    useNewUrlParser: true,
-     useUnifiedTopology: true,
-}).then(() =>{
-    console.log('Database connected..')
-})
-
-
-app.use(express.json())
-app.use(cors())
-const PORT = 8080
-
-app.get('/', async (req,res) => {
-    console.log("808 : ",req.params);
-})
-
+const PhoneBook = require('../models/PhoneBook.model')
 
 
 app.post('/add-phone', async(req,res) => {
@@ -42,8 +19,6 @@ app.post('/add-phone', async(req,res) => {
     }
 })
 
-
-
 app.get('/get-phone', async (req,res) => {
     const phoneNumbers = await PhoneBook.find({})
     try{
@@ -61,7 +36,7 @@ app.get('/get-phone', async (req,res) => {
     }
 })
 
-app.put('/update-phone/:id', async (req,res) => {
+app.patch('/update-phone/:id', async (req,res) => {
     const updatedPhone = await PhoneBook.findByIdAndUpdate(req.params.id,req.body,{
         new : true,
         runValidators : true
@@ -92,9 +67,4 @@ app.delete('/delete-phone/:id', async(req,res) => {
             message : err
         })
     }
-})
-
-
-app.listen(PORT, () => {
-    console.log(`Server is running on PORT ${PORT}...`)
 })
