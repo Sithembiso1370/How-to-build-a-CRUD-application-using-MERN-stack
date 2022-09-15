@@ -23,7 +23,6 @@ app.get('/', async (req,res) => {
 })
 
 
-
 app.post('/add-phone', async(req,res) => {
     const phoneNumber = new PhoneBook(req.body)
     try{
@@ -62,10 +61,13 @@ app.get('/get-phone', async (req,res) => {
 })
 
 app.put('/update-phone/:id', async (req,res) => {
+
     const updatedPhone = await PhoneBook.findByIdAndUpdate(req.params.id,req.body,{
         new : true,
         runValidators : true
-      })
+    })
+
+
     try{
         res.status(200).json({
             status : 'Success',
